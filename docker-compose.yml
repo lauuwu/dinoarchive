@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: dino
+      POSTGRES_PASSWORD: dinopass
+      POSTGRES_DB: dinoarchive
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://dino:dinopass@db:5432/dinoarchive
+      SECRET_KEY: supersecretkey123
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

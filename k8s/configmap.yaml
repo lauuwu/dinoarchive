@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dinoarchive-config
+  namespace: dinoarchive
+data:
+  POSTGRES_DB: dinoarchive
+  POSTGRES_USER: dino
+  DB_HOST: postgres-service

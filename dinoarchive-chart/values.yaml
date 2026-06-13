@@ -1,0 +1,17 @@
+namespace: dinoarchive
+
+postgres:
+  image: postgres:16
+  db: dinoarchive
+  user: dino
+  password: dinopass
+  storage: 1Gi
+
+backend:
+  image: lauuwu/dinoarchive-backend:latest
+  imagePullPolicy: Never
+  replicas: 1
+  secretKey: supersecretkey123
+
+ingress:
+  host: dinoarchive.local

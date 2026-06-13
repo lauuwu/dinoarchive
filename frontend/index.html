@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DinoArchive</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --bg2: #161616;
+      --bg3: #1e1e1e;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --text2: #888;
+      --text3: #555;
+      --accent: #e8e8e8;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .nav-logo { font-size: 14px; font-weight: 600; letter-spacing: 0.12em; }
+    .nav-logo span { color: var(--text3); font-weight: 400; }
+    .nav-actions { display: flex; gap: 8px; }
+
+    button {
+      font-family: inherit; cursor: pointer;
+      font-size: 13px; padding: 6px 14px;
+      border-radius: 8px; border: 1px solid var(--border);
+      background: transparent; color: var(--text2);
+      transition: all 0.15s;
+    }
+    button:hover { border-color: #444; color: var(--text); }
+    .btn-primary {
+      background: var(--text); color: var(--bg);
+      border-color: var(--text);
+    }
+    .btn-primary:hover { background: #ccc; }
+
+    .hero {
+      max-width: 720px; margin: 0 auto;
+      padding: 4rem 2rem 2rem;
+    }
+    .eyebrow {
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text3); margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 2.2rem; font-weight: 500; line-height: 1.15;
+      color: var(--text); margin-bottom: 0.75rem;
+    }
+    .hero-sub {
+      font-size: 15px; color: var(--text2); line-height: 1.6; margin-bottom: 2rem;
+    }
+
+    .search-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 16px; margin-bottom: 12px;
+    }
+    .search-wrap svg { color: var(--text3); flex-shrink: 0; }
+    .search-wrap input {
+      border: none; background: transparent; outline: none;
+      font-size: 14px; color: var(--text); flex: 1;
+      font-family: inherit;
+    }
+    .search-wrap input::placeholder { color: var(--text3); }
+
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .pill {
+      font-size: 12px; padding: 4px 12px; border-radius: 99px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text2);
+    }
+    .pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    .section { max-width: 720px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem; }
+    .stat {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem; text-align: center;
+    }
+    .stat-num { font-size: 1.8rem; font-weight: 500; }
+    .stat-lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+    .section-label {
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text3); margin-bottom: 1rem;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
+
+    .dino-list { display: flex; flex-direction: column; gap: 8px; }
+    .dino-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.25rem;
+      display: grid; grid-template-columns: 48px 1fr auto;
+      gap: 1rem; align-items: start;
+      cursor: pointer; transition: border-color 0.15s;
+    }
+    .dino-card:hover { border-color: #444; }
+    .dino-icon {
+      width: 48px; height: 48px; border-radius: 8px;
+      background: var(--bg3); display: flex;
+      align-items: center; justify-content: center; font-size: 22px;
+    }
+    .dino-name { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
+    .dino-meta { font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+    .dino-desc { font-size: 13px; color: var(--text2); line-height: 1.55; }
+    .fun-fact { margin-top: 8px; font-size: 12px; color: var(--text3); }
+
+    .badge {
+      font-size: 11px; padding: 3px 10px; border-radius: 99px;
+      border: 1px solid var(--border); color: var(--text3);
+      white-space: nowrap; height: fit-content;
+    }
+    .badge.carni { border-color: #5a2a1a; color: #c47a5a; background: #1a0e0a; }
+    .badge.herbi { border-color: #1a3a1a; color: #5a9a5a; background: #0a1a0a; }
+
+    .empty {
+      text-align: center; padding: 4rem 1rem;
+      color: var(--text3); font-size: 14px;
+    }
+    .empty .icon { font-size: 2rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">DINO<span>ARCHIVE</span></span>
+  <div class="nav-actions">
+    <button>Iniciar sesión</button>
+    <button class="btn-primary">Registrarse</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">Enciclopedia paleontológica</p>
+  <h1>Cada especie.<br>Cada era. Documentada.</h1>
+  <p class="hero-sub">Una base de datos minimalista sobre los dinosaurios que habitaron la Tierra hace millones de años.</p>
+
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="Buscar especie, período, dieta..." oninput="filter()" />
+  </div>
+
+  <div class="filters">
+    <button class="pill active" onclick="setFilter('todos',this)">Todos</button>
+    <button class="pill" onclick="setFilter('Jurásico',this)">Jurásico</button>
+    <button class="pill" onclick="setFilter('Cretácico',this)">Cretácico</button>
+    <button class="pill" onclick="setFilter('Triásico',this)">Triásico</button>
+    <button class="pill" onclick="setFilter('carnívoro',this)">Carnívoros</button>
+    <button class="pill" onclick="setFilter('herbívoro',this)">Herbívoros</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="stats" id="stats" style="display:none">
+    <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">Especies</div></div>
+    <div class="stat"><div class="stat-num" id="s-carni">0</div><div class="stat-lbl">Carnívoros</div></div>
+    <div class="stat"><div class="stat-num" id="s-herbi">0</div><div class="stat-lbl">Herbívoros</div></div>
+  </div>
+
+  <p class="section-label">Especies registradas</p>
+  <div class="dino-list" id="list">
+    <div class="empty"><div class="icon">⏳</div>Conectando con la API...</div>
+  </div>
+</div>
+
+<script>
+  const API = 'http://localhost:8000';
+  const ICONS = { carnívoro: '🦖', herbívoro: '🦕' };
+  let all = [], activeFilter = 'todos';
+
+  async function load() {
+    try {
+      const res = await fetch(API + '/dinos/');
+      all = await res.json();
+      document.getElementById('s-total').textContent = all.length;
+      document.getElementById('s-carni').textContent = all.filter(d => d.diet === 'carnívoro').length;
+      document.getElementById('s-herbi').textContent = all.filter(d => d.diet === 'herbívoro').length;
+      document.getElementById('stats').style.display = 'grid';
+      render(all);
+    } catch {
+      document.getElementById('list').innerHTML =
+        '<div class="empty"><div class="icon">📡</div>No se pudo conectar con la API.<br><small>Asegurate de que Docker esté corriendo.</small></div>';
+    }
+  }
+
+  function setFilter(f, el) {
+    activeFilter = f;
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    filter();
+  }
+
+  function filter() {
+    const q = document.getElementById('search').value.toLowerCase();
+    const result = all.filter(d => {
+      const matchQ = !q || [d.name, d.period, d.diet, d.description].join(' ').toLowerCase().includes(q);
+      const matchF = activeFilter === 'todos' || d.period === activeFilter || d.diet === activeFilter;
+      return matchQ && matchF;
+    });
+    render(result);
+  }
+
+  function render(dinos) {
+    const list = document.getElementById('list');
+    if (!dinos.length) {
+      list.innerHTML = '<div class="empty"><div class="icon">🔍</div>No se encontraron especies con ese criterio.</div>';
+      return;
+    }
+    list.innerHTML = dinos.map(d => `
+      <div class="dino-card">
+        <div class="dino-icon">${ICONS[d.diet] || '🦴'}</div>
+        <div>
+          <div class="dino-name">${d.name}</div>
+          <div class="dino-meta">${[d.period, d.length_m ? d.length_m + ' m' : null].filter(Boolean).join(' · ')}</div>
+          <div class="dino-desc">${d.description || 'Sin descripción.'}</div>
+          ${d.fun_fact ? `<div class="fun-fact">💡 ${d.fun_fact}</div>` : ''}
+        </div>
+        <span class="badge ${d.diet === 'carnívoro' ? 'carni' : d.diet === 'herbívoro' ? 'herbi' : ''}">${d.diet || '—'}</span>
+      </div>
+    `).join('');
+  }
+
+  load();
+</script>
+</body>
+</html>
