@@ -8,14 +8,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0d0d0d;
-      --bg2: #161616;
-      --bg3: #1e1e1e;
-      --border: #2a2a2a;
-      --text: #e8e8e8;
-      --text2: #888;
-      --text3: #555;
-      --accent: #e8e8e8;
+      --bg: #0e1410;
+      --bg2: #161f19;
+      --bg3: #1d2920;
+      --border: #2a3a30;
+      --text: #e8ece9;
+      --text2: #93a395;
+      --text3: #5c6b5e;
+      --moss: #7fae6f;
+      --moss-dim: #2a3a26;
+      --amber: #d9a35c;
+      --amber-dim: #3a2e1c;
+      --rust: #c4744f;
+      --rust-dim: #3a241c;
     }
 
     body {
@@ -23,18 +28,33 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      background-image:
+        radial-gradient(circle at 15% 8%, rgba(127,174,111,0.05), transparent 40%),
+        radial-gradient(circle at 85% 90%, rgba(196,116,79,0.04), transparent 40%);
     }
 
     nav {
       display: flex; align-items: center; justify-content: space-between;
       padding: 1rem 2rem;
       border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      background: rgba(14,20,16,0.85);
+      backdrop-filter: blur(6px);
       position: sticky; top: 0; z-index: 10;
     }
-    .nav-logo { font-size: 14px; font-weight: 600; letter-spacing: 0.12em; }
+    .nav-logo {
+      font-size: 14px; font-weight: 600; letter-spacing: 0.14em;
+      cursor: pointer; background: none; border: none; color: var(--text);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-logo .leaf { color: var(--moss); }
     .nav-logo span { color: var(--text3); font-weight: 400; }
-    .nav-actions { display: flex; gap: 8px; }
+    .nav-actions { display: flex; gap: 8px; align-items: center; }
+
+    .score-pill {
+      font-size: 12px; padding: 5px 12px; border-radius: 99px;
+      background: var(--amber-dim); color: var(--amber);
+      border: 1px solid #4a3a20; display: none; align-items: center; gap: 5px;
+    }
 
     button {
       font-family: inherit; cursor: pointer;
@@ -43,147 +63,390 @@
       background: transparent; color: var(--text2);
       transition: all 0.15s;
     }
-    button:hover { border-color: #444; color: var(--text); }
-    .btn-primary {
-      background: var(--text); color: var(--bg);
-      border-color: var(--text);
-    }
-    .btn-primary:hover { background: #ccc; }
+    button:hover { border-color: var(--moss); color: var(--text); }
+    .btn-primary { background: var(--moss); color: #0e1410; border-color: var(--moss); font-weight: 500; }
+    .btn-primary:hover { background: #93c182; }
 
-    .hero {
-      max-width: 720px; margin: 0 auto;
-      padding: 4rem 2rem 2rem;
-    }
+    .hero { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2rem; }
     .eyebrow {
-      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--text3); margin-bottom: 1rem;
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--moss); margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 6px;
     }
-    h1 {
-      font-size: 2.2rem; font-weight: 500; line-height: 1.15;
-      color: var(--text); margin-bottom: 0.75rem;
-    }
-    .hero-sub {
-      font-size: 15px; color: var(--text2); line-height: 1.6; margin-bottom: 2rem;
-    }
+    .eyebrow::before { content: ''; width: 16px; height: 1px; background: var(--moss); }
+    h1 { font-size: 2.2rem; font-weight: 500; line-height: 1.15; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+    .hero-sub { font-size: 15px; color: var(--text2); line-height: 1.6; margin-bottom: 2rem; max-width: 480px; }
 
     .search-wrap {
       display: flex; align-items: center; gap: 10px;
       background: var(--bg2); border: 1px solid var(--border);
       border-radius: 12px; padding: 10px 16px; margin-bottom: 12px;
     }
-    .search-wrap svg { color: var(--text3); flex-shrink: 0; }
+    .search-wrap svg.icon { color: var(--text3); flex-shrink: 0; }
     .search-wrap input {
       border: none; background: transparent; outline: none;
-      font-size: 14px; color: var(--text); flex: 1;
-      font-family: inherit;
+      font-size: 14px; color: var(--text); flex: 1; font-family: inherit;
     }
     .search-wrap input::placeholder { color: var(--text3); }
 
     .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2.5rem; }
     .pill {
       font-size: 12px; padding: 4px 12px; border-radius: 99px;
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text2);
+      border: 1px solid var(--border); background: transparent; color: var(--text2);
     }
-    .pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .pill.active { background: var(--moss); color: #0e1410; border-color: var(--moss); }
 
     .section { max-width: 720px; margin: 0 auto; padding: 0 2rem 4rem; }
 
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem; }
-    .stat {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 10px; padding: 1rem; text-align: center;
-    }
-    .stat-num { font-size: 1.8rem; font-weight: 500; }
-    .stat-lbl { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2rem; }
+    .stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .stat-num { font-size: 1.6rem; font-weight: 500; }
+    .stat-num.amber { color: var(--amber); }
+    .stat-lbl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
 
     .section-label {
       font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--text3); margin-bottom: 1rem;
       padding-bottom: 8px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 6px;
     }
 
     .dino-list { display: flex; flex-direction: column; gap: 8px; }
     .dino-card {
       background: var(--bg2); border: 1px solid var(--border);
       border-radius: 12px; padding: 1.25rem;
-      display: grid; grid-template-columns: 48px 1fr auto;
-      gap: 1rem; align-items: start;
-      cursor: pointer; transition: border-color 0.15s;
+      display: grid; grid-template-columns: 64px 1fr auto;
+      gap: 1rem; align-items: center;
+      cursor: pointer; position: relative; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s, background 0.2s;
     }
-    .dino-card:hover { border-color: #444; }
-    .dino-icon {
-      width: 48px; height: 48px; border-radius: 8px;
-      background: var(--bg3); display: flex;
-      align-items: center; justify-content: center; font-size: 22px;
+    .dino-card::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: var(--accent-color, var(--moss)); opacity: 0;
+      transition: opacity 0.2s;
     }
+    .dino-card:hover { border-color: #3a4a3e; transform: translateY(-2px); background: var(--bg3); }
+    .dino-card:hover::before { opacity: 1; }
+    .dino-card:active { transform: translateY(0) scale(0.99); }
+
+    .dino-icon-box {
+      width: 64px; height: 52px; border-radius: 10px;
+      background: var(--accent-bg, var(--moss-dim));
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: visible;
+    }
+    .dino-icon-box svg { width: 56px; height: 44px; overflow: visible; }
+
     .dino-name { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
     .dino-meta { font-size: 12px; color: var(--text3); margin-bottom: 6px; }
     .dino-desc { font-size: 13px; color: var(--text2); line-height: 1.55; }
-    .fun-fact { margin-top: 8px; font-size: 12px; color: var(--text3); }
+    .fun-fact { margin-top: 8px; font-size: 12px; color: var(--text3); display: flex; gap: 5px; }
 
     .badge {
       font-size: 11px; padding: 3px 10px; border-radius: 99px;
       border: 1px solid var(--border); color: var(--text3);
       white-space: nowrap; height: fit-content;
     }
-    .badge.carni { border-color: #5a2a1a; color: #c47a5a; background: #1a0e0a; }
-    .badge.herbi { border-color: #1a3a1a; color: #5a9a5a; background: #0a1a0a; }
+    .badge.carni { border-color: #4a2a1c; color: var(--rust); background: var(--rust-dim); }
+    .badge.herbi { border-color: #1c3a20; color: var(--moss); background: var(--moss-dim); }
 
-    .empty {
-      text-align: center; padding: 4rem 1rem;
-      color: var(--text3); font-size: 14px;
-    }
+    .empty { text-align: center; padding: 4rem 1rem; color: var(--text3); font-size: 14px; }
     .empty .icon { font-size: 2rem; margin-bottom: 1rem; }
+
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .back-btn { display: inline-flex; align-items: center; gap: 6px; margin: 1.5rem 2rem 0; font-size: 13px; }
+
+    .detail-hero { max-width: 720px; margin: 0 auto; padding: 2rem 2rem 1rem; display: flex; align-items: center; gap: 1.25rem; }
+    .detail-icon-box {
+      width: 110px; height: 90px; border-radius: 18px;
+      background: var(--accent-bg, var(--moss-dim));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: visible;
+    }
+    .detail-icon-box svg { width: 96px; height: 76px; overflow: visible; }
+    .detail-title h1 { font-size: 1.8rem; margin-bottom: 6px; }
+    .detail-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .detail-block { max-width: 720px; margin: 0 auto; padding: 1.5rem 2rem; }
+    .detail-block h2 {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--moss); margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .detail-block p { font-size: 14px; line-height: 1.7; color: var(--text2); }
+
+    .fact-card {
+      background: var(--amber-dim); border: 1px solid #4a3a20;
+      border-radius: 12px; padding: 1rem 1.25rem;
+      font-size: 14px; color: var(--amber); line-height: 1.6;
+    }
+
+    .quiz-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+    .quiz-progress { font-size: 11px; color: var(--text3); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .quiz-q { font-size: 14px; margin-bottom: 1rem; }
+    .quiz-opt { display: block; width: 100%; text-align: left; margin-bottom: 8px; font-size: 13px; }
+    .quiz-opt.correct { border-color: #1c3a20; color: var(--moss); background: var(--moss-dim); }
+    .quiz-opt.wrong { border-color: #4a2a1c; color: var(--rust); background: var(--rust-dim); }
+    .quiz-points { font-size: 12px; color: var(--amber); margin-top: 10px; }
+    .quiz-empty { font-size: 13px; color: var(--text3); }
+
+    .login-card {
+      max-width: 360px; margin: 4rem auto; background: var(--bg2);
+      border: 1px solid var(--border); border-radius: 14px; padding: 2rem;
+    }
+    .login-card h2 { font-size: 18px; margin-bottom: 0.5rem; }
+    .login-card p { font-size: 13px; color: var(--text3); margin-bottom: 1.5rem; }
+    .field { margin-bottom: 12px; }
+    .field label { font-size: 12px; color: var(--text3); display: block; margin-bottom: 4px; }
+    .field input {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 9px 12px; color: var(--text);
+      font-family: inherit; font-size: 13px; outline: none;
+    }
+    .field input:focus { border-color: var(--moss); }
+    .login-error { font-size: 12px; color: var(--rust); margin-top: 8px; display: none; }
+    .login-switch { font-size: 12px; color: var(--text3); margin-top: 1rem; text-align: center; }
+    .login-switch button { border: none; padding: 0; font-size: 12px; color: var(--moss); text-decoration: underline; }
+
+    /* Animaciones de los iconos de dinosaurio */
+    @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+    @keyframes bob-head { 0%, 100% { transform: rotate(0deg) translateY(0); } 50% { transform: rotate(3deg) translateY(-1.5px); } }
+    @keyframes breathe { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.02); } }
+    @keyframes tail-sway { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
+    .eye { animation: blink 4.2s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+    .head-group { animation: bob-head 3.6s ease-in-out infinite; transform-origin: bottom right; transform-box: fill-box; }
+    .body-group { animation: breathe 2.8s ease-in-out infinite; transform-origin: bottom center; transform-box: fill-box; }
+    .tail { animation: tail-sway 3.4s ease-in-out infinite; transform-origin: top right; transform-box: fill-box; }
   </style>
 </head>
 <body>
 
 <nav>
-  <span class="nav-logo">DINO<span>ARCHIVE</span></span>
+  <button class="nav-logo" onclick="showView('home')"><span class="leaf">🌿</span>DINO<span>ARCHIVE</span></button>
   <div class="nav-actions">
-    <button>Iniciar sesión</button>
-    <button class="btn-primary">Registrarse</button>
+    <div class="score-pill" id="score-pill">🏆 <span id="nav-score">0</span> pts</div>
+    <button id="nav-login" onclick="showView('login')">Iniciar sesión</button>
+    <button id="nav-logout" onclick="logout()" style="display:none">Cerrar sesión</button>
   </div>
 </nav>
 
-<div class="hero">
-  <p class="eyebrow">Enciclopedia paleontológica</p>
-  <h1>Cada especie.<br>Cada era. Documentada.</h1>
-  <p class="hero-sub">Una base de datos minimalista sobre los dinosaurios que habitaron la Tierra hace millones de años.</p>
+<div id="view-home" class="view active">
+  <div class="hero">
+    <p class="eyebrow">Enciclopedia paleontológica</p>
+    <h1>Cada especie.<br>Cada era. Documentada.</h1>
+    <p class="hero-sub">Una base de datos sobre los dinosaurios que habitaron la Tierra hace millones de años.</p>
 
-  <div class="search-wrap">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input type="text" id="search" placeholder="Buscar especie, período, dieta..." oninput="filter()" />
+    <div class="search-wrap">
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search" placeholder="Buscar especie, período, dieta..." oninput="filter()" />
+    </div>
+
+    <div class="filters">
+      <button class="pill active" onclick="setFilter('todos',this)">Todos</button>
+      <button class="pill" onclick="setFilter('Jurásico',this)">Jurásico</button>
+      <button class="pill" onclick="setFilter('Cretácico',this)">Cretácico</button>
+      <button class="pill" onclick="setFilter('Triásico',this)">Triásico</button>
+      <button class="pill" onclick="setFilter('carnívoro',this)">Carnívoros</button>
+      <button class="pill" onclick="setFilter('herbívoro',this)">Herbívoros</button>
+    </div>
   </div>
 
-  <div class="filters">
-    <button class="pill active" onclick="setFilter('todos',this)">Todos</button>
-    <button class="pill" onclick="setFilter('Jurásico',this)">Jurásico</button>
-    <button class="pill" onclick="setFilter('Cretácico',this)">Cretácico</button>
-    <button class="pill" onclick="setFilter('Triásico',this)">Triásico</button>
-    <button class="pill" onclick="setFilter('carnívoro',this)">Carnívoros</button>
-    <button class="pill" onclick="setFilter('herbívoro',this)">Herbívoros</button>
+  <div class="section">
+    <div class="stats" id="stats" style="display:none">
+      <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">Especies</div></div>
+      <div class="stat"><div class="stat-num" id="s-carni">0</div><div class="stat-lbl">Carnívoros</div></div>
+      <div class="stat"><div class="stat-num" id="s-herbi">0</div><div class="stat-lbl">Herbívoros</div></div>
+      <div class="stat"><div class="stat-num amber" id="s-top">—</div><div class="stat-lbl">Líder</div></div>
+    </div>
+
+    <p class="section-label">🦴 Especies registradas</p>
+    <div class="dino-list" id="list">
+      <div class="empty"><div class="icon">⏳</div>Conectando con la API...</div>
+    </div>
   </div>
 </div>
 
-<div class="section">
-  <div class="stats" id="stats" style="display:none">
-    <div class="stat"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">Especies</div></div>
-    <div class="stat"><div class="stat-num" id="s-carni">0</div><div class="stat-lbl">Carnívoros</div></div>
-    <div class="stat"><div class="stat-num" id="s-herbi">0</div><div class="stat-lbl">Herbívoros</div></div>
+<div id="view-detail" class="view">
+  <button class="back-btn" onclick="showView('home')">← Volver al listado</button>
+
+  <div class="detail-hero">
+    <div class="detail-icon-box" id="d-icon-box"></div>
+    <div class="detail-title">
+      <h1 id="d-name">—</h1>
+      <div class="detail-meta">
+        <span class="badge" id="d-period">—</span>
+        <span class="badge" id="d-diet">—</span>
+        <span class="badge" id="d-length">—</span>
+      </div>
+    </div>
   </div>
 
-  <p class="section-label">Especies registradas</p>
-  <div class="dino-list" id="list">
-    <div class="empty"><div class="icon">⏳</div>Conectando con la API...</div>
+  <div class="detail-block">
+    <h2>📜 Descripción</h2>
+    <p id="d-description">—</p>
+  </div>
+
+  <div class="detail-block">
+    <h2>💡 Dato curioso</h2>
+    <div class="fact-card" id="d-fact">—</div>
+  </div>
+
+  <div class="detail-block">
+    <h2>🧠 Pon a prueba lo que sabés</h2>
+    <div class="quiz-card" id="d-quiz"></div>
+  </div>
+</div>
+
+<div id="view-login" class="view">
+  <div class="login-card">
+    <h2 id="auth-title">Iniciar sesión</h2>
+    <p id="auth-sub">Entrá para guardar tu puntaje en el ranking.</p>
+
+    <div class="field" id="field-username" style="display:none">
+      <label>Usuario</label>
+      <input type="text" id="reg-username" />
+    </div>
+    <div class="field" id="field-email" style="display:none">
+      <label>Email</label>
+      <input type="email" id="reg-email" />
+    </div>
+    <div class="field">
+      <label>Usuario</label>
+      <input type="text" id="login-username" />
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="login-password" />
+    </div>
+
+    <button class="btn-primary" id="auth-submit" style="width:100%" onclick="doLogin()">Entrar</button>
+    <p class="login-error" id="login-error">Credenciales incorrectas</p>
+
+    <div class="login-switch">
+      <span id="switch-text">¿No tenés cuenta?</span>
+      <button onclick="toggleAuthMode()" id="switch-btn">Registrate</button>
+    </div>
   </div>
 </div>
 
 <script>
   const API = 'http://localhost:8000';
-  const ICONS = { carnívoro: '🦖', herbívoro: '🦕' };
-  let all = [], activeFilter = 'todos';
+
+  // --- Iconos SVG por especie: silueta, color y animación propios ---
+  const DINO_SVGS = {
+    'Velociraptor': { bg:'rgba(95,179,141,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:130px 80px" d="M130 80 Q160 76 180 56 Q188 50 192 40 Q186 56 170 70 Q150 86 130 88 Z" fill="#4f9e8a" stroke="#1a3a32" stroke-width="2.2" stroke-linejoin="round"/><path d="M108 88 Q116 96 114 110 Q120 116 116 122 L106 124 Q102 118 106 112 Q100 100 98 90 Z" fill="#3f8a76" stroke="#1a3a32" stroke-width="2.2" stroke-linejoin="round"/><path d="M72 92 Q76 100 72 112 Q76 118 72 124 L62 125 Q60 118 64 112 Q60 100 64 92 Z" fill="#4f9e8a" stroke="#1a3a32" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:90px 100px"><path d="M58 96 Q52 78 66 68 Q78 56 96 60 Q116 64 124 78 Q130 88 122 96 Q112 106 86 104 Q64 102 58 96 Z" fill="#5fb39d" stroke="#1a3a32" stroke-width="2.4" stroke-linejoin="round"/><path d="M70 80 Q60 78 56 70 Q64 70 72 76 Z" fill="#7ccab5" stroke="#1a3a32" stroke-width="1.8" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:60px 74px"><path d="M62 76 Q44 66 38 50 Q34 38 40 28 Q46 20 52 24 Q56 28 52 34 Q46 40 48 50 Q50 60 60 68 Z" fill="#5fb39d" stroke="#1a3a32" stroke-width="2.2" stroke-linejoin="round"/><path d="M40 30 Q28 24 18 26 Q26 34 38 36 Z" fill="#5fb39d" stroke="#1a3a32" stroke-width="2" stroke-linejoin="round"/><path d="M44 22 Q42 12 50 14 Q49 20 45 26 Z" fill="#7ccab5" stroke="#1a3a32" stroke-width="1.4"/><circle cx="34" cy="32" r="5" fill="#102420"/><circle cx="32.3" cy="30.3" r="1.4" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="34" cy="32" rx="5" ry="5" fill="#102420"/></g></svg>` },
+    'Tyrannosaurus Rex': { bg:'rgba(220,185,94,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:128px 84px" d="M128 84 Q158 80 178 60 Q186 52 190 42 Q184 60 166 76 Q146 92 128 92 Z" fill="#c9a44a" stroke="#3a2e14" stroke-width="2.2" stroke-linejoin="round"/><path d="M104 92 Q114 100 112 116 Q118 122 114 128 L102 130 Q98 122 102 116 Q96 102 94 94 Z" fill="#b8943f" stroke="#3a2e14" stroke-width="2.2" stroke-linejoin="round"/><path d="M64 96 Q68 106 64 118 Q68 124 64 130 L52 132 Q50 124 54 118 Q50 106 54 96 Z" fill="#c9a44a" stroke="#3a2e14" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:86px 104px"><path d="M48 98 Q40 78 56 66 Q72 52 94 58 Q120 64 128 82 Q134 92 124 100 Q112 112 80 108 Q56 106 48 98 Z" fill="#dcb95e" stroke="#3a2e14" stroke-width="2.4" stroke-linejoin="round"/><path d="M58 86 Q48 86 44 78 Q52 78 60 82 Z" fill="#e8c878" stroke="#3a2e14" stroke-width="1.8" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:54px 80px"><path d="M56 82 Q34 76 24 58 Q18 44 28 32 Q38 22 50 28 Q58 34 50 42 Q42 50 46 62 Q50 74 58 80 Z" fill="#dcb95e" stroke="#3a2e14" stroke-width="2.4" stroke-linejoin="round"/><path d="M24 58 Q10 56 4 64 Q14 70 26 66 Z" fill="#dcb95e" stroke="#3a2e14" stroke-width="2.2" stroke-linejoin="round"/><circle cx="38" cy="44" r="6.5" fill="#2a2410"/><circle cx="35.8" cy="41.8" r="1.8" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="38" cy="44" rx="6.5" ry="6.5" fill="#2a2410"/></g></svg>` },
+    'Brachiosaurus': { bg:'rgba(155,143,217,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:130px 90px" d="M130 90 Q156 84 166 64 Q172 80 158 94 Q146 104 130 100 Z" fill="#7568b8" stroke="#241c3a" stroke-width="2.2" stroke-linejoin="round"/><path d="M112 92 Q118 102 114 116 Q120 122 116 128 L104 130 Q102 122 106 116 Q100 104 100 94 Z" fill="#6a5cab" stroke="#241c3a" stroke-width="2.2" stroke-linejoin="round"/><path d="M86 94 Q90 104 86 116 Q90 122 86 128 L74 130 Q72 122 76 116 Q72 104 76 94 Z" fill="#9b8fd9" stroke="#241c3a" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:96px 96px"><path d="M70 92 Q64 78 78 70 Q92 62 110 66 Q126 70 130 84 Q132 92 122 96 Q104 102 84 98 Q72 96 70 92 Z" fill="#9b8fd9" stroke="#241c3a" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:74px 80px"><path d="M76 84 Q60 70 56 48 Q54 30 62 18 Q68 8 74 14 Q78 20 72 28 Q64 38 66 56 Q68 74 78 86 Z" fill="#b0a6e2" stroke="#241c3a" stroke-width="2.2" stroke-linejoin="round"/><circle cx="62" cy="22" r="5" fill="#1f1730"/><circle cx="60.3" cy="20.3" r="1.4" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="62" cy="22" rx="5" ry="5" fill="#1f1730"/></g></svg>` },
+    'Stegosaurus': { bg:'rgba(196,116,79,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:128px 86px" d="M128 86 Q150 82 162 64 Q168 78 154 90 Q142 98 128 96 Z" fill="#965638" stroke="#3a1810" stroke-width="2.2" stroke-linejoin="round"/><path d="M58 86 L52 64 L62 60 L66 84 Z" fill="#965638" stroke="#3a1810" stroke-width="1.8" stroke-linejoin="round"/><path d="M40 88 L36 70 L46 68 L48 86 Z" fill="#c4744f" stroke="#3a1810" stroke-width="1.8" stroke-linejoin="round"/><path d="M108 90 Q116 98 112 112 Q118 118 114 124 L102 126 Q100 118 104 112 Q98 100 98 92 Z" fill="#965638" stroke="#3a1810" stroke-width="2.2" stroke-linejoin="round"/><path d="M68 92 Q72 102 68 114 Q72 120 68 126 L56 128 Q54 120 58 114 Q54 102 58 92 Z" fill="#c4744f" stroke="#3a1810" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:88px 94px"><path d="M52 90 Q44 74 60 64 Q76 54 96 60 Q116 66 122 82 Q126 90 116 94 Q98 102 76 96 Q56 94 52 90 Z" fill="#c4744f" stroke="#3a1810" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:56px 78px"><ellipse cx="44" cy="62" rx="13" ry="11" fill="#c4744f" stroke="#3a1810" stroke-width="2.2"/><circle cx="38" cy="58" r="4.5" fill="#2c130d"/><circle cx="36.6" cy="56.6" r="1.2" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="38" cy="58" rx="4.5" ry="4.5" fill="#2c130d"/></g></svg>` },
+    'Triceratops': { bg:'rgba(168,168,168,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:126px 86px" d="M126 86 Q148 82 158 64 Q164 78 150 90 Q138 98 126 96 Z" fill="#8a8a8a" stroke="#2a2a2a" stroke-width="2.2" stroke-linejoin="round"/><path d="M104 90 Q112 98 108 112 Q114 118 110 124 L98 126 Q96 118 100 112 Q94 100 94 92 Z" fill="#8a8a8a" stroke="#2a2a2a" stroke-width="2.2" stroke-linejoin="round"/><path d="M64 92 Q68 102 64 114 Q68 120 64 126 L52 128 Q50 120 54 114 Q50 102 54 92 Z" fill="#a8a8a8" stroke="#2a2a2a" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:84px 94px"><path d="M48 90 Q40 74 56 64 Q72 54 92 60 Q112 66 118 82 Q122 90 112 94 Q94 102 72 96 Q52 94 48 90 Z" fill="#a8a8a8" stroke="#2a2a2a" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:52px 80px"><path d="M50 82 Q34 76 26 60 Q22 48 30 38 Q38 30 46 36 Q52 42 46 48 Q40 56 44 66 Q46 76 52 84 Z" fill="#a8a8a8" stroke="#2a2a2a" stroke-width="2.2" stroke-linejoin="round"/><path d="M30 38 Q24 26 30 20 Q34 30 34 40 Z" fill="#7a7a7a" stroke="#2a2a2a" stroke-width="1.8"/><path d="M40 36 Q38 22 46 18 Q46 30 44 40 Z" fill="#7a7a7a" stroke="#2a2a2a" stroke-width="1.8"/><path d="M48 42 Q50 30 56 28 Q54 38 50 46 Z" fill="#7a7a7a" stroke="#2a2a2a" stroke-width="1.8"/><circle cx="36" cy="50" r="5.5" fill="#1a1a1a"/><circle cx="34" cy="48.2" r="1.5" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="36" cy="50" rx="5.5" ry="5.5" fill="#1a1a1a"/></g></svg>` },
+    'Diplodocus': { bg:'rgba(116,166,116,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:128px 88px" d="M128 88 Q160 84 184 60 Q192 50 196 38 Q188 58 168 76 Q146 94 128 96 Z" fill="#5a8a5a" stroke="#1c3022" stroke-width="2.2" stroke-linejoin="round"/><path d="M104 92 Q112 100 108 114 Q114 120 110 126 L98 128 Q96 120 100 114 Q94 102 94 94 Z" fill="#5a8a5a" stroke="#1c3022" stroke-width="2.2" stroke-linejoin="round"/><path d="M70 94 Q74 104 70 116 Q74 122 70 128 L58 130 Q56 122 60 116 Q56 104 60 94 Z" fill="#74a674" stroke="#1c3022" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:88px 96px"><path d="M52 92 Q44 76 60 66 Q76 56 96 62 Q116 68 122 84 Q126 92 116 96 Q98 104 76 98 Q56 96 52 92 Z" fill="#74a674" stroke="#1c3022" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:56px 80px"><path d="M58 84 Q38 76 34 56 Q32 42 42 34 Q50 28 56 36 Q60 42 52 48 Q46 56 50 68 Q52 78 60 86 Z" fill="#74a674" stroke="#1c3022" stroke-width="2.2" stroke-linejoin="round"/><circle cx="44" cy="46" r="4.5" fill="#0e1a12"/><circle cx="42.6" cy="44.6" r="1.2" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="44" cy="46" rx="4.5" ry="4.5" fill="#0e1a12"/></g></svg>` },
+    'Allosaurus': { bg:'rgba(217,192,80,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:128px 84px" d="M128 84 Q156 80 174 60 Q182 52 186 42 Q180 58 164 74 Q146 90 128 92 Z" fill="#c4a83a" stroke="#332e14" stroke-width="2.2" stroke-linejoin="round"/><path d="M106 90 Q116 98 112 114 Q118 120 114 126 L102 128 Q98 120 102 114 Q96 100 96 92 Z" fill="#b39830" stroke="#332e14" stroke-width="2.2" stroke-linejoin="round"/><path d="M68 94 Q72 104 68 116 Q72 122 68 128 L56 130 Q54 122 58 116 Q54 104 58 94 Z" fill="#d9c050" stroke="#332e14" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:88px 96px"><path d="M50 92 Q42 74 58 64 Q74 52 96 58 Q118 64 124 82 Q128 92 116 96 Q96 104 74 98 Q54 96 50 92 Z" fill="#d9c050" stroke="#332e14" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:56px 80px"><path d="M58 84 Q36 78 26 60 Q20 46 30 34 Q40 24 50 30 Q58 36 48 44 Q40 52 44 64 Q48 76 58 86 Z" fill="#d9c050" stroke="#332e14" stroke-width="2.4" stroke-linejoin="round"/><path d="M26 60 Q12 58 6 66 Q16 72 28 68 Z" fill="#d9c050" stroke="#332e14" stroke-width="2.2" stroke-linejoin="round"/><path d="M42 26 Q44 16 50 20 Q48 26 44 30 Z" fill="#e8d878" stroke="#332e14" stroke-width="1.4"/><circle cx="38" cy="44" r="5.5" fill="#332810"/><circle cx="36" cy="42.2" r="1.5" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="38" cy="44" rx="5.5" ry="5.5" fill="#332810"/></g></svg>` },
+    'Ankylosaurus': { bg:'rgba(99,133,82,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:130px 92px" d="M130 92 Q150 90 158 76 Q166 86 156 96 Q146 102 130 100 Z" fill="#506b3f" stroke="#23301f" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="160" cy="80" rx="9" ry="6" fill="#3e5630" stroke="#23301f" stroke-width="2"/><path d="M106 94 Q112 102 108 114 Q114 120 110 126 L98 128 Q96 120 100 114 Q94 104 96 96 Z" fill="#506b3f" stroke="#23301f" stroke-width="2.2" stroke-linejoin="round"/><path d="M68 96 Q72 104 68 116 Q72 122 68 128 L56 130 Q54 122 58 116 Q54 104 58 96 Z" fill="#638552" stroke="#23301f" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:90px 98px"><path d="M50 96 Q44 80 60 70 Q78 60 98 66 Q120 72 126 88 Q130 96 118 100 Q98 106 76 102 Q54 100 50 96 Z" fill="#638552" stroke="#23301f" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="68" cy="76" rx="7" ry="4" fill="#3e5630" stroke="#23301f" stroke-width="1.6"/><ellipse cx="86" cy="70" rx="7" ry="4" fill="#3e5630" stroke="#23301f" stroke-width="1.6"/><ellipse cx="104" cy="76" rx="7" ry="4" fill="#3e5630" stroke="#23301f" stroke-width="1.6"/></g><g class="head-group" style="transform-origin:56px 84px"><ellipse cx="42" cy="74" rx="16" ry="13" fill="#638552" stroke="#23301f" stroke-width="2.2"/><circle cx="34" cy="70" r="5.5" fill="#172210"/><circle cx="32" cy="68.2" r="1.5" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="34" cy="70" rx="5.5" ry="5.5" fill="#172210"/></g></svg>` },
+    'Pteranodon': { bg:'rgba(199,113,186,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:120px 78px" d="M120 78 Q140 74 148 58 Q154 72 140 84 Q130 90 120 86 Z" fill="#a85b9e" stroke="#3a1c38" stroke-width="2.2" stroke-linejoin="round"/><path d="M30 64 Q10 56 0 38 Q22 42 38 56 Z" fill="#c771ba" stroke="#3a1c38" stroke-width="2.2" stroke-linejoin="round"/><path d="M96 78 Q102 86 98 98 Q104 104 100 110 L88 112 Q86 104 90 98 Q84 88 86 80 Z" fill="#a85b9e" stroke="#3a1c38" stroke-width="2.2" stroke-linejoin="round"/><path d="M62 80 Q66 88 62 100 Q66 106 62 112 L50 114 Q48 106 52 100 Q48 88 52 80 Z" fill="#c771ba" stroke="#3a1c38" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:76px 82px"><path d="M40 78 Q32 64 46 56 Q60 46 78 50 Q96 54 100 68 Q102 76 92 80 Q76 86 56 82 Q42 80 40 78 Z" fill="#c771ba" stroke="#3a1c38" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:46px 66px"><path d="M48 68 Q32 62 26 48 Q22 36 30 28 Q38 22 44 28 Q48 34 42 40 Q36 46 40 56 Q42 64 50 70 Z" fill="#c771ba" stroke="#3a1c38" stroke-width="2.2" stroke-linejoin="round"/><path d="M26 48 Q14 44 8 50 Q16 56 28 54 Z" fill="#c771ba" stroke="#3a1c38" stroke-width="2" stroke-linejoin="round"/><path d="M32 24 Q28 14 38 16 Q38 24 32 30 Z" fill="#dc8fd1" stroke="#3a1c38" stroke-width="1.4"/><circle cx="36" cy="36" r="4.5" fill="#22102a"/><circle cx="34.6" cy="34.6" r="1.2" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="36" cy="36" rx="4.5" ry="4.5" fill="#22102a"/></g></svg>` },
+    'Carnotaurus': { bg:'rgba(207,106,85,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:118px 80px" d="M118 80 Q140 76 148 60 Q154 74 140 86 Q130 92 118 88 Z" fill="#a14c3f" stroke="#3a1810" stroke-width="2.2" stroke-linejoin="round"/><path d="M98 84 Q104 92 100 104 Q106 110 102 116 L90 118 Q88 110 92 104 Q86 94 88 86 Z" fill="#8f3f33" stroke="#3a1810" stroke-width="2.2" stroke-linejoin="round"/><path d="M62 86 Q66 94 62 106 Q66 112 62 118 L50 120 Q48 112 52 106 Q48 94 52 86 Z" fill="#cf6a55" stroke="#3a1810" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:78px 88px"><path d="M44 84 Q36 70 50 60 Q64 50 82 54 Q102 58 106 74 Q108 82 98 86 Q82 92 60 88 Q46 86 44 84 Z" fill="#cf6a55" stroke="#3a1810" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:48px 72px"><ellipse cx="36" cy="62" rx="15" ry="13" fill="#cf6a55" stroke="#3a1810" stroke-width="2.2"/><path d="M22 50 Q16 40 24 36 Q26 46 28 52 Z" fill="#8a3a2c" stroke="#3a1810" stroke-width="1.8"/><path d="M38 48 Q36 38 44 36 Q44 46 40 52 Z" fill="#8a3a2c" stroke="#3a1810" stroke-width="1.8"/><circle cx="28" cy="60" r="5.5" fill="#2c130d"/><circle cx="26" cy="58.2" r="1.5" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="28" cy="60" rx="5.5" ry="5.5" fill="#2c130d"/></g></svg>` },
+    'Parasaurolophus': { bg:'rgba(110,166,212,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:128px 82px" d="M128 82 Q156 78 174 58 Q182 50 186 40 Q180 56 164 72 Q146 88 128 90 Z" fill="#3d6e94" stroke="#1c2a30" stroke-width="2.2" stroke-linejoin="round"/><path d="M104 86 Q112 94 108 108 Q114 114 110 120 L98 122 Q96 114 100 108 Q94 96 96 88 Z" fill="#3d6e94" stroke="#1c2a30" stroke-width="2.2" stroke-linejoin="round"/><path d="M62 88 Q66 96 62 108 Q66 114 62 120 L50 122 Q48 114 52 108 Q48 96 52 88 Z" fill="#5a93c1" stroke="#1c2a30" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:84px 90px"><path d="M44 86 Q36 70 52 60 Q68 50 90 56 Q112 62 116 78 Q118 86 106 90 Q86 96 64 92 Q46 90 44 86 Z" fill="#5a93c1" stroke="#1c2a30" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:48px 76px"><path d="M50 80 Q30 72 22 54 Q18 40 28 30 Q36 22 44 28 Q50 34 42 42 Q34 50 38 62 Q42 74 52 82 Z" fill="#5a93c1" stroke="#1c2a30" stroke-width="2.2" stroke-linejoin="round"/><path d="M30 26 Q40 8 52 18 Q44 24 36 32 Q32 30 30 26 Z" fill="#6ea6d4" stroke="#1c2a30" stroke-width="1.8"/><circle cx="36" cy="42" r="5" fill="#0e1a24"/><circle cx="34.3" cy="40.3" r="1.4" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="36" cy="42" rx="5" ry="5" fill="#0e1a24"/></g></svg>` },
+    'Compsognathus': { bg:'rgba(110,166,212,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:122px 78px" d="M122 78 Q146 74 158 56 Q164 68 152 80 Q140 88 122 86 Z" fill="#3d6e94" stroke="#1f2630" stroke-width="2.2" stroke-linejoin="round"/><path d="M98 82 Q104 90 100 102 Q106 108 102 114 L90 116 Q88 108 92 102 Q86 92 88 84 Z" fill="#3d6e94" stroke="#1f2630" stroke-width="2.2" stroke-linejoin="round"/><path d="M62 84 Q66 92 62 104 Q66 110 62 116 L50 118 Q48 110 52 104 Q48 92 52 84 Z" fill="#6ea6d4" stroke="#1f2630" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:76px 86px"><path d="M40 82 Q32 68 46 58 Q60 48 78 54 Q98 60 102 76 Q104 84 92 88 Q76 94 56 90 Q42 88 40 82 Z" fill="#6ea6d4" stroke="#1f2630" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:44px 72px"><path d="M46 76 Q26 70 18 52 Q14 38 24 28 Q32 20 40 26 Q46 32 38 40 Q30 48 34 60 Q38 72 48 78 Z" fill="#6ea6d4" stroke="#1f2630" stroke-width="2.2" stroke-linejoin="round"/><path d="M18 52 Q4 50 -2 56 Q8 62 20 60 Z" fill="#6ea6d4" stroke="#1f2630" stroke-width="2" stroke-linejoin="round"/><circle cx="30" cy="38" r="4.5" fill="#0e1a24"/><circle cx="28.6" cy="36.6" r="1.2" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="30" cy="38" rx="4.5" ry="4.5" fill="#0e1a24"/></g></svg>` },
+    'Spinosaurus': { bg:'rgba(58,165,144,0.18)', svg: `<svg viewBox="0 0 200 140"><path class="tail" style="transform-origin:128px 84px" d="M128 84 Q156 80 172 60 Q180 52 184 42 Q178 58 162 74 Q144 90 128 92 Z" fill="#2f8a78" stroke="#1c302c" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="158" cy="56" rx="22" ry="14" fill="#3aa590" stroke="#1c302c" stroke-width="2.2" transform="rotate(-20 158 56)"/><path d="M104 88 Q112 96 108 110 Q114 116 110 122 L98 124 Q96 116 100 110 Q94 100 96 92 Z" fill="#2f8a78" stroke="#1c302c" stroke-width="2.2" stroke-linejoin="round"/><path d="M66 90 Q70 98 66 110 Q70 116 66 122 L54 124 Q52 116 56 110 Q52 100 56 90 Z" fill="#3aa590" stroke="#1c302c" stroke-width="2.2" stroke-linejoin="round"/><g class="body-group" style="transform-origin:86px 92px"><path d="M50 88 Q42 72 58 62 Q74 52 94 58 Q116 64 120 80 Q122 88 110 92 Q92 98 70 94 Q52 92 50 88 Z" fill="#3aa590" stroke="#1c302c" stroke-width="2.4" stroke-linejoin="round"/></g><g class="head-group" style="transform-origin:54px 78px"><path d="M56 82 Q38 74 32 56 Q28 42 38 32 Q46 24 54 32 Q58 38 50 46 Q42 54 46 64 Q48 74 58 84 Z" fill="#3aa590" stroke="#1c302c" stroke-width="2.4" stroke-linejoin="round"/><path d="M32 56 Q18 54 12 62 Q22 68 34 64 Z" fill="#3aa590" stroke="#1c302c" stroke-width="2.2" stroke-linejoin="round"/><circle cx="42" cy="40" r="5.5" fill="#102420"/><circle cx="40" cy="38.2" r="1.5" fill="#fff" opacity="0.9"/><ellipse class="eye" cx="42" cy="40" rx="5.5" ry="5.5" fill="#102420"/></g></svg>` },
+  };
+  const DEFAULT_DINO = { bg:'rgba(147,163,149,0.15)', svg: `<svg viewBox="0 0 200 140"><g class="body-group" style="transform-origin:90px 100px"><ellipse cx="90" cy="95" rx="40" ry="22" fill="#93a395" stroke="#5c6b5e" stroke-width="2.4"/></g><g class="head-group" style="transform-origin:60px 80px"><circle cx="50" cy="70" r="18" fill="#93a395" stroke="#5c6b5e" stroke-width="2.2"/><circle cx="44" cy="64" r="5" fill="#1a2418"/><ellipse class="eye" cx="44" cy="64" rx="5" ry="5" fill="#1a2418"/></g></svg>` };
+
+  function dinoIcon(name) {
+    return DINO_SVGS[name] || DEFAULT_DINO;
+  }
+
+  const PERIOD_ACCENT = {
+    'Jurásico': '#7fae6f', 'Cretácico': '#c4744f', 'Triásico': '#d9a35c'
+  };
+
+  let all = [], activeFilter = 'todos', isRegisterMode = false;
+  let token = null;
+
+  function showView(view) {
+    ['home','detail','login'].forEach(v => {
+      document.getElementById('view-' + v).classList.toggle('active', v === view);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateAuthUI() {
+    document.getElementById('nav-login').style.display = token ? 'none' : 'inline-block';
+    document.getElementById('nav-logout').style.display = token ? 'inline-block' : 'none';
+    document.getElementById('score-pill').style.display = token ? 'flex' : 'none';
+  }
+
+  function logout() {
+    token = null;
+    updateAuthUI();
+    showView('home');
+  }
+
+  function toggleAuthMode() {
+    isRegisterMode = !isRegisterMode;
+    document.getElementById('field-username').style.display = isRegisterMode ? 'block' : 'none';
+    document.getElementById('field-email').style.display = isRegisterMode ? 'block' : 'none';
+    document.getElementById('auth-title').textContent = isRegisterMode ? 'Crear cuenta' : 'Iniciar sesión';
+    document.getElementById('auth-submit').textContent = isRegisterMode ? 'Registrarme' : 'Entrar';
+    document.getElementById('switch-text').textContent = isRegisterMode ? '¿Ya tenés cuenta?' : '¿No tenés cuenta?';
+    document.getElementById('switch-btn').textContent = isRegisterMode ? 'Iniciar sesión' : 'Registrate';
+    document.getElementById('login-error').style.display = 'none';
+  }
+
+  async function doLogin() {
+    const errorEl = document.getElementById('login-error');
+    errorEl.style.display = 'none';
+
+    if (isRegisterMode) {
+      const username = document.getElementById('reg-username').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('login-password').value;
+      try {
+        const res = await fetch(API + '/auth/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password })
+        });
+        if (!res.ok) throw new Error();
+        toggleAuthMode();
+        document.getElementById('login-username').value = username;
+      } catch {
+        errorEl.textContent = 'No se pudo registrar. ¿El usuario o email ya existen?';
+        errorEl.style.display = 'block';
+      }
+      return;
+    }
+
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    try {
+      const res = await fetch(API + '/auth/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      token = data.access_token;
+      await refreshScore();
+      updateAuthUI();
+      showView('home');
+    } catch {
+      errorEl.textContent = 'Credenciales incorrectas';
+      errorEl.style.display = 'block';
+    }
+  }
+
+  async function refreshScore() {
+    try {
+      const res = await fetch(API + '/quiz/leaderboard');
+      const board = await res.json();
+      const username = document.getElementById('login-username').value;
+      const me = board.find(u => u.username === username);
+      document.getElementById('nav-score').textContent = me ? me.score : 0;
+      if (board[0]) document.getElementById('s-top').textContent = board[0].username;
+    } catch {}
+  }
 
   async function load() {
     try {
@@ -194,15 +457,16 @@
       document.getElementById('s-herbi').textContent = all.filter(d => d.diet === 'herbívoro').length;
       document.getElementById('stats').style.display = 'grid';
       render(all);
+      refreshScore();
     } catch {
       document.getElementById('list').innerHTML =
-        '<div class="empty"><div class="icon">📡</div>No se pudo conectar con la API.<br><small>Asegurate de que Docker esté corriendo.</small></div>';
+        '<div class="empty"><div class="icon">📡</div>No se pudo conectar con la API.<br><small>Asegurate de que Kubernetes esté corriendo.</small></div>';
     }
   }
 
   function setFilter(f, el) {
     activeFilter = f;
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.filters .pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
     filter();
   }
@@ -223,9 +487,12 @@
       list.innerHTML = '<div class="empty"><div class="icon">🔍</div>No se encontraron especies con ese criterio.</div>';
       return;
     }
-    list.innerHTML = dinos.map(d => `
-      <div class="dino-card">
-        <div class="dino-icon">${ICONS[d.diet] || '🦴'}</div>
+    list.innerHTML = dinos.map(d => {
+      const icon = dinoIcon(d.name);
+      const accent = PERIOD_ACCENT[d.period] || '#93a395';
+      return `
+      <div class="dino-card" style="--accent-bg:${icon.bg}; --accent-color:${accent}" onclick="openDetail(${d.id})">
+        <div class="dino-icon-box">${icon.svg}</div>
         <div>
           <div class="dino-name">${d.name}</div>
           <div class="dino-meta">${[d.period, d.length_m ? d.length_m + ' m' : null].filter(Boolean).join(' · ')}</div>
@@ -234,7 +501,92 @@
         </div>
         <span class="badge ${d.diet === 'carnívoro' ? 'carni' : d.diet === 'herbívoro' ? 'herbi' : ''}">${d.diet || '—'}</span>
       </div>
-    `).join('');
+    `}).join('');
+  }
+
+  let currentQuizQuestions = [];
+  let currentQuizIndex = 0;
+
+  async function openDetail(id) {
+    const dino = all.find(d => d.id === id);
+    if (!dino) return;
+    const icon = dinoIcon(dino.name);
+
+    document.getElementById('d-icon-box').style.setProperty('--accent-bg', icon.bg);
+    document.getElementById('d-icon-box').innerHTML = icon.svg;
+    document.getElementById('d-name').textContent = dino.name;
+    document.getElementById('d-period').textContent = dino.period || '—';
+    document.getElementById('d-diet').textContent = dino.diet || '—';
+    document.getElementById('d-length').textContent = dino.length_m ? dino.length_m + ' m' : '—';
+    document.getElementById('d-description').textContent = dino.description || 'Sin descripción registrada todavía.';
+    document.getElementById('d-fact').textContent = dino.fun_fact || 'Sin dato curioso registrado todavía.';
+
+    try {
+      const res = await fetch(`${API}/quiz/dino/${id}`);
+      currentQuizQuestions = await res.json();
+      currentQuizIndex = 0;
+      renderQuiz();
+    } catch {
+      document.getElementById('d-quiz').innerHTML = '<p class="quiz-empty">No se pudo cargar el quiz.</p>';
+    }
+
+    showView('detail');
+  }
+
+  function renderQuiz() {
+    const box = document.getElementById('d-quiz');
+    if (!currentQuizQuestions.length) {
+      box.innerHTML = '<p class="quiz-empty">Todavía no hay preguntas para esta especie.</p>';
+      return;
+    }
+    if (currentQuizIndex >= currentQuizQuestions.length) {
+      box.innerHTML = '<p class="quiz-empty">🎉 Completaste todas las preguntas de esta especie.</p>';
+      return;
+    }
+    const q = currentQuizQuestions[currentQuizIndex];
+    const options = [q.correct_answer, q.wrong_answer_1, q.wrong_answer_2].sort(() => Math.random() - 0.5);
+
+    box.innerHTML = `
+      <div class="quiz-progress">Pregunta ${currentQuizIndex + 1} de ${currentQuizQuestions.length}</div>
+      <div class="quiz-q">${q.question}</div>
+      ${options.map(opt => `<button class="quiz-opt" onclick="answerQuiz(this, '${opt.replace(/'/g, "\\'")}', ${q.id}, '${q.correct_answer.replace(/'/g, "\\'")}', ${q.points})">${opt}</button>`).join('')}
+      <div id="quiz-feedback"></div>
+    `;
+  }
+
+  async function answerQuiz(btn, chosen, questionId, correctAnswer, points) {
+    document.querySelectorAll('#d-quiz .quiz-opt').forEach(b => b.disabled = true);
+    const isCorrect = chosen === correctAnswer;
+
+    if (!token) {
+      btn.classList.add(isCorrect ? 'correct' : 'wrong');
+      document.getElementById('quiz-feedback').innerHTML =
+        `<p class="quiz-points">${isCorrect ? '¡Correcto!' : 'Incorrecto.'} Iniciá sesión para guardar tus puntos.</p>`;
+      setTimeout(() => { currentQuizIndex++; renderQuiz(); }, 1600);
+      return;
+    }
+
+    try {
+      const res = await fetch(API + '/quiz/answer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ question_id: questionId, chosen_answer: chosen })
+      });
+      const result = await res.json();
+      btn.classList.add(result.correct ? 'correct' : 'wrong');
+      if (!result.correct) {
+        document.querySelectorAll('#d-quiz .quiz-opt').forEach(b => {
+          if (b.textContent === result.correct_answer) b.classList.add('correct');
+        });
+      }
+      document.getElementById('nav-score').textContent = result.new_score;
+      document.getElementById('quiz-feedback').innerHTML =
+        `<p class="quiz-points">${result.correct ? '+' + result.points_awarded + ' puntos 🏆' : 'La respuesta correcta era: ' + result.correct_answer}</p>`;
+    } catch {
+      document.getElementById('quiz-feedback').innerHTML = '<p class="quiz-points">Error al enviar la respuesta.</p>';
+    }
+
+    setTimeout(() => { currentQuizIndex++; renderQuiz(); }, 1600);
   }
 
   load();

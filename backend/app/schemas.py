@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
 class UserCreate(BaseModel):
@@ -12,6 +12,7 @@ class UserOut(BaseModel):
     username: str
     email: str
     is_admin: bool
+    score: int
     model_config = {"from_attributes": True}
 
 class Token(BaseModel):
@@ -31,3 +32,31 @@ class DinosaurOut(DinosaurCreate):
     id: int
     created_at: datetime
     model_config = {"from_attributes": True}
+
+class QuizQuestionCreate(BaseModel):
+    dinosaur_id: int
+    question: str
+    correct_answer: str
+    wrong_answer_1: str
+    wrong_answer_2: str
+    points: Optional[int] = 10
+
+class QuizQuestionOut(BaseModel):
+    id: int
+    dinosaur_id: int
+    question: str
+    correct_answer: str
+    wrong_answer_1: str
+    wrong_answer_2: str
+    points: int
+    model_config = {"from_attributes": True}
+
+class AnswerSubmit(BaseModel):
+    question_id: int
+    chosen_answer: str
+
+class AnswerResult(BaseModel):
+    correct: bool
+    points_awarded: int
+    new_score: int
+    correct_answer: str
