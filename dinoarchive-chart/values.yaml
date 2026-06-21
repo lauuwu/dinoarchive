@@ -13,5 +13,11 @@ backend:
   replicas: 1
   secretKey: supersecretkey123
 
+smtp:
+  host: smtp.gmail.com
+  port: "587"
+  user: "tu-cuenta@gmail.com"
+  password: "tu-contraseña-de-aplicacion"
+
 ingress:
   host: dinoarchive.local

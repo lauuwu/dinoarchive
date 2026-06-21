@@ -13,6 +13,7 @@ class UserOut(BaseModel):
     email: str
     is_admin: bool
     score: int
+    created_at: datetime
     model_config = {"from_attributes": True}
 
 class Token(BaseModel):
@@ -60,3 +61,28 @@ class AnswerResult(BaseModel):
     points_awarded: int
     new_score: int
     correct_answer: str
+
+class BlogPostCreate(BaseModel):
+    title: str
+    excerpt: Optional[str] = None
+    content: str
+    image_url: Optional[str] = None
+
+class BlogPostOut(BaseModel):
+    id: int
+    title: str
+    excerpt: Optional[str] = None
+    content: str
+    image_url: Optional[str] = None
+    created_at: datetime
+    author_username: str
+    model_config = {"from_attributes": True}
+
+class GalleryImageOut(BaseModel):
+    id: int
+    title: str
+    caption: Optional[str] = None
+    filename: str
+    created_at: datetime
+    uploader_username: str
+    model_config = {"from_attributes": True}

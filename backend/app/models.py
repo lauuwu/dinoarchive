@@ -13,6 +13,31 @@ class User(Base):
     score = Column(Integer, default=0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    blog_posts = relationship("BlogPost", back_populates="author")
+
+class BlogPost(Base):
+    __tablename__ = "blog_posts"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(150), nullable=False)
+    excerpt = Column(String(280))
+    content = Column(Text, nullable=False)
+    image_url = Column(String(255))
+    author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    author = relationship("User", back_populates="blog_posts")
+
+class GalleryImage(Base):
+    __tablename__ = "gallery_images"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(150), nullable=False)
+    caption = Column(String(280))
+    filename = Column(String(255), nullable=False)
+    uploader_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    uploader = relationship("User")
+
 class Dinosaur(Base):
     __tablename__ = "dinosaurs"
     id = Column(Integer, primary_key=True, index=True)

@@ -45,5 +45,28 @@ spec:
                 secretKeyRef:
                   name: dinoarchive-secret
                   key: SECRET_KEY
+            - name: SMTP_HOST
+              value: "smtp.gmail.com"
+            - name: SMTP_PORT
+              value: "587"
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: dinoarchive-secret
+                  key: SMTP_USER
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dinoarchive-secret
+                  key: SMTP_PASSWORD
+            - name: UPLOAD_DIR
+              value: "/app/uploads"
             - name: DATABASE_URL
               value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(DB_HOST):5432/$(POSTGRES_DB)
+          volumeMounts:
+            - name: gallery-storage
+              mountPath: /app/uploads
+      volumes:
+        - name: gallery-storage
+          persistentVolumeClaim:
+            claimName: gallery-pvc
