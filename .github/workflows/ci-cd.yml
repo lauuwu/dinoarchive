@@ -17,6 +17,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # DIAGNÓSTICO TEMPORAL - borrar después de confirmar que funciona
+      - name: Check secrets are set
+        run: |
+          if [ -z "${{ secrets.DOCKERHUB_USERNAME }}" ]; then
+            echo "❌ DOCKERHUB_USERNAME está vacío"
+          else
+            echo "✅ DOCKERHUB_USERNAME tiene valor (largo: ${#DOCKERHUB_USERNAME})"
+          fi
+          if [ -z "${{ secrets.DOCKERHUB_TOKEN }}" ]; then
+            echo "❌ DOCKERHUB_TOKEN está vacío"
+          else
+            echo "✅ DOCKERHUB_TOKEN tiene valor"
+          fi
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+
       # 2. Iniciar sesión en Docker Hub usando secretos
       #    (NUNCA ponemos la contraseña directamente acá)
       - name: Log in to Docker Hub
