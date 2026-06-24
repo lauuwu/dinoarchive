@@ -61,5 +61,7 @@ class QuizQuestion(Base):
     wrong_answer_1 = Column(String(150), nullable=False)
     wrong_answer_2 = Column(String(150), nullable=False)
     points = Column(Integer, default=10)
+    fact = Column(Text)
+    difficulty = Column(String(10), default="easy")
 
     dinosaur = relationship("Dinosaur", back_populates="questions")

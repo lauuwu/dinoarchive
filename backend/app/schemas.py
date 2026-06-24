@@ -41,6 +41,8 @@ class QuizQuestionCreate(BaseModel):
     wrong_answer_1: str
     wrong_answer_2: str
     points: Optional[int] = 10
+    fact: Optional[str] = None
+    difficulty: Optional[str] = "easy"
 
 class QuizQuestionOut(BaseModel):
     id: int
@@ -50,6 +52,8 @@ class QuizQuestionOut(BaseModel):
     wrong_answer_1: str
     wrong_answer_2: str
     points: int
+    fact: Optional[str] = None
+    difficulty: str
     model_config = {"from_attributes": True}
 
 class AnswerSubmit(BaseModel):
