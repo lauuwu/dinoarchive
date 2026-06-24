@@ -1,0 +1,60 @@
+name: DinoArchive CI/CD
+
+# Se ejecuta en cada push a la rama main, y también se puede
+# disparar manualmente desde la interfaz de GitHub.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    name: Build & Push Docker image
+    runs-on: ubuntu-latest   # GitHub nos presta una máquina Ubuntu limpia gratis
+
+    steps:
+      # 1. Clonar el repo en la máquina de GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Iniciar sesión en Docker Hub usando secretos
+      #    (NUNCA ponemos la contraseña directamente acá)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 3. Configurar el builder de Docker (BuildKit)
+      #    Esto hace los builds más rápidos usando caché entre runs
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 4. Construir y subir la imagen
+      #    Sube dos tags: uno con el hash del commit (para trazabilidad)
+      #    y otro como "latest" (el que usa Kubernetes por defecto)
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            lauuwu/dinoarchive-backend:latest
+            lauuwu/dinoarchive-backend:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Job separado que solo corre si el build anterior tuvo éxito
+  notify:
+    name: Notify success
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      - name: Print deploy info
+        run: |
+          echo "✅ Build exitoso"
+          echo "Imagen: lauuwu/dinoarchive-backend:latest"
+          echo "Commit: ${{ github.sha }}"
+          echo "Autor: ${{ github.actor }}"
+          echo "Mensaje: ${{ github.event.head_commit.message }}"
