@@ -50,6 +50,19 @@ class Dinosaur(Base):
     image_url = Column(String(255))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    # Campos científicos nuevos
+    family = Column(String(100))          # ej: "Tyrannosauridae"
+    clade = Column(String(100))           # ej: "Terópodo"
+    epoch = Column(String(120))           # ej: "Cretácico tardío, 68–66 Ma"
+    country = Column(String(150))         # ej: "Estados Unidos, Canadá"
+    continent = Column(String(80))        # ej: "América del Norte"
+    weight_t = Column(String(20))         # ej: "8.0" (toneladas)
+    locomotion = Column(String(60))       # "bípedo" | "cuadrúpedo" | etc.
+    discovered_year = Column(Integer)     # ej: 1874
+    discoverer = Column(String(200))      # ej: "Edward Drinker Cope"
+    institution = Column(String(200))     # ej: "American Museum of Natural History"
+    source = Column(Text)                 # referencia bibliográfica
+
     questions = relationship("QuizQuestion", back_populates="dinosaur", cascade="all, delete-orphan")
 
 class QuizQuestion(Base):

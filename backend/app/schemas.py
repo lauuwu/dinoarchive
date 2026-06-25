@@ -28,6 +28,17 @@ class DinosaurCreate(BaseModel):
     description: Optional[str] = None
     fun_fact: Optional[str] = None
     image_url: Optional[str] = None
+    family: Optional[str] = None
+    clade: Optional[str] = None
+    epoch: Optional[str] = None
+    country: Optional[str] = None
+    continent: Optional[str] = None
+    weight_t: Optional[str] = None
+    locomotion: Optional[str] = None
+    discovered_year: Optional[int] = None
+    discoverer: Optional[str] = None
+    institution: Optional[str] = None
+    source: Optional[str] = None
 
 class DinosaurOut(DinosaurCreate):
     id: int

@@ -280,6 +280,16 @@
     .rank-legend-row { display: flex; gap: 8px; align-items: center; }
     .rank-legend-row .ricon { font-size: 16px; width: 22px; }
 
+    /* Panel de admin */
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .admin-table th { text-align: left; padding: 8px 12px; color: var(--text3); font-weight: 500; border-bottom: 1px solid var(--border); text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; }
+    .admin-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: var(--bg2); }
+    .admin-badge { font-size: 11px; padding: 2px 7px; border-radius: 5px; background: rgba(127,174,111,0.2); color: var(--moss); font-weight: 600; }
+    .admin-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .admin-actions button { font-size: 11px; padding: 4px 10px; }
+
     .dino-name { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
     .dino-meta { font-size: 12px; color: var(--text3); margin-bottom: 6px; }
     .dino-desc { font-size: 13px; color: var(--text2); line-height: 1.55; }
@@ -321,6 +331,22 @@
       display: flex; align-items: center; gap: 6px;
     }
     .detail-block p { font-size: 14px; line-height: 1.7; color: var(--text2); }
+
+    /* Ficha científica colapsable */
+    .sci-toggle {
+      width: 100%; text-align: left; font-size: 14px; font-weight: 500;
+      padding: 10px 0; border: none; background: none; color: var(--text);
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
+    }
+    .sci-toggle::before { content: none; }
+    .sci-toggle:hover { color: var(--moss); }
+    #sci-toggle-icon { margin-left: auto; font-size: 11px; color: var(--text3); }
+    .sci-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .sci-row { display: flex; gap: 12px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .sci-row:last-child { border-bottom: none; }
+    .sci-label { color: var(--text3); min-width: 140px; flex-shrink: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding-top: 2px; }
+    .sci-val { color: var(--text2); line-height: 1.5; }
+    .sci-source .sci-val { font-size: 12px; font-style: italic; color: var(--text3); }
 
     .fact-card {
       background: var(--amber-dim); border: 1px solid #4a3a20;
@@ -443,6 +469,7 @@
     <button onclick="openLeaderboard()">🏅 Ranking</button>
     <div class="score-pill" id="score-pill">🏆 <span id="nav-score">0</span> pts</div>
     <button id="nav-profile" onclick="showProfile()" style="display:none">Mi perfil</button>
+    <button id="nav-admin" onclick="openAdminPanel()" style="display:none">⚙️ Admin</button>
     <button id="nav-login" onclick="showView('login')">Iniciar sesión</button>
     <button id="nav-logout" onclick="logout()" style="display:none">Cerrar sesión</button>
   </div>
@@ -495,6 +522,8 @@
         <span class="badge" id="d-period">—</span>
         <span class="badge" id="d-diet">—</span>
         <span class="badge" id="d-length">—</span>
+        <span class="badge" id="d-weight" style="display:none">—</span>
+        <span class="badge" id="d-locomotion" style="display:none">—</span>
       </div>
     </div>
   </div>
@@ -507,6 +536,23 @@
   <div class="detail-block">
     <h2>💡 Dato curioso</h2>
     <div class="fact-card" id="d-fact">—</div>
+  </div>
+
+  <div class="detail-block sci-section" id="d-sci-section">
+    <button class="sci-toggle" onclick="toggleSciSection()">
+      🔬 Ficha científica completa <span id="sci-toggle-icon">▼</span>
+    </button>
+    <div class="sci-grid" id="sci-grid" style="display:none">
+      <div class="sci-row"><span class="sci-label">Familia</span><span class="sci-val" id="d-family">—</span></div>
+      <div class="sci-row"><span class="sci-label">Clado</span><span class="sci-val" id="d-clade">—</span></div>
+      <div class="sci-row"><span class="sci-label">Época</span><span class="sci-val" id="d-epoch">—</span></div>
+      <div class="sci-row"><span class="sci-label">País de hallazgo</span><span class="sci-val" id="d-country">—</span></div>
+      <div class="sci-row"><span class="sci-label">Continente</span><span class="sci-val" id="d-continent">—</span></div>
+      <div class="sci-row"><span class="sci-label">Año descubierto</span><span class="sci-val" id="d-year">—</span></div>
+      <div class="sci-row"><span class="sci-label">Descubridor</span><span class="sci-val" id="d-discoverer">—</span></div>
+      <div class="sci-row"><span class="sci-label">Institución</span><span class="sci-val" id="d-institution">—</span></div>
+      <div class="sci-row sci-source"><span class="sci-label">Fuente</span><span class="sci-val" id="d-source">—</span></div>
+    </div>
   </div>
 
   <div class="detail-block">
@@ -692,6 +738,20 @@
   <button id="lightbox-delete" onclick="deleteGalleryImage(event)" style="display:none">Eliminar imagen</button>
 </div>
 
+<div id="view-admin" class="view">
+  <button class="back-btn" onclick="showView('home')">← Volver al listado</button>
+
+  <div class="hero" style="padding-top: 2rem; padding-bottom: 1rem;">
+    <p class="eyebrow">Panel de control</p>
+    <h1>Administración</h1>
+    <p class="hero-sub">Gestión de usuarios del sitio.</p>
+  </div>
+
+  <div class="section">
+    <div id="admin-users-list"></div>
+  </div>
+</div>
+
 <script>
   const API = 'http://dinoarchive.local:8080';
 
@@ -769,7 +829,7 @@
   let currentUser = null;
 
   function showView(view) {
-    ['home','detail','login','profile','blog','blog-detail','blog-form','gallery','gallery-form','leaderboard'].forEach(v => {
+    ['home','detail','login','profile','blog','blog-detail','blog-form','gallery','gallery-form','leaderboard','admin'].forEach(v => {
       document.getElementById('view-' + v).classList.toggle('active', v === view);
     });
 
@@ -783,6 +843,7 @@
     document.getElementById('nav-login').style.display = token ? 'none' : 'inline-block';
     document.getElementById('nav-logout').style.display = token ? 'inline-block' : 'none';
     document.getElementById('nav-profile').style.display = token ? 'inline-block' : 'none';
+    document.getElementById('nav-admin').style.display = (token && currentUser && currentUser.is_admin) ? 'inline-block' : 'none';
     document.getElementById('score-pill').style.display = token ? 'flex' : 'none';
     document.getElementById('blog-admin-bar').style.display = (token && currentUser && currentUser.is_admin) ? 'flex' : 'none';
     document.getElementById('gallery-admin-bar').style.display = (token && currentUser && currentUser.is_admin) ? 'flex' : 'none';
@@ -1041,6 +1102,30 @@
     document.getElementById('d-description').textContent = dino.description || 'Sin descripción registrada todavía.';
     document.getElementById('d-fact').textContent = dino.fun_fact || 'Sin dato curioso registrado todavía.';
 
+    const weightEl = document.getElementById('d-weight');
+    if (dino.weight_t) { weightEl.textContent = '⚖️ ' + dino.weight_t + ' t'; weightEl.style.display = 'inline-flex'; }
+    else { weightEl.style.display = 'none'; }
+
+    const locoEl = document.getElementById('d-locomotion');
+    const locoIcon = { 'bípedo': '🦵', 'cuadrúpedo': '🐾', 'bípedo/cuadrúpedo': '🦵🐾', 'volador / bípedo en tierra': '🪶', 'cuadrúpedo/bípedo': '🐾🦵', 'planeador / bípedo': '🪶' };
+    if (dino.locomotion) { locoEl.textContent = (locoIcon[dino.locomotion] || '') + ' ' + dino.locomotion; locoEl.style.display = 'inline-flex'; }
+    else { locoEl.style.display = 'none'; }
+
+    const sci = {
+      'family': dino.family, 'clade': dino.clade, 'epoch': dino.epoch,
+      'country': dino.country, 'continent': dino.continent,
+      'year': dino.discovered_year, 'discoverer': dino.discoverer,
+      'institution': dino.institution, 'source': dino.source
+    };
+    for (const [key, val] of Object.entries(sci)) {
+      const el = document.getElementById('d-' + key);
+      if (el) el.textContent = val || '—';
+    }
+
+    // Cerrar la ficha científica cada vez que se abre una nueva card
+    document.getElementById('sci-grid').style.display = 'none';
+    document.getElementById('sci-toggle-icon').textContent = '▼';
+
     try {
       const res = await fetch(`${API}/quiz/dino/${id}`);
       currentQuizQuestions = await res.json();
@@ -1051,6 +1136,14 @@
     }
 
     showView('detail');
+  }
+
+  function toggleSciSection() {
+    const grid = document.getElementById('sci-grid');
+    const icon = document.getElementById('sci-toggle-icon');
+    const visible = grid.style.display !== 'none';
+    grid.style.display = visible ? 'none' : 'flex';
+    icon.textContent = visible ? '▼' : '▲';
   }
 
   function renderQuiz() {
@@ -1334,6 +1427,95 @@
       mote.style.animationDelay = (Math.random() * 14) + 's';
       container.appendChild(mote);
     }
+  }
+
+  // ---- Panel de admin ----
+  async function openAdminPanel() {
+    if (!token || !currentUser || !currentUser.is_admin) { showView('login'); return; }
+    showView('admin');
+    await refreshAdminUsers();
+  }
+
+  async function refreshAdminUsers() {
+    const list = document.getElementById('admin-users-list');
+    try {
+      const res = await fetch(API + '/admin/users', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) throw new Error();
+      const users = await res.json();
+
+      list.innerHTML = `
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Puntaje</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${users.map(u => `
+              <tr>
+                <td><strong>${u.username}</strong></td>
+                <td>${u.email}</td>
+                <td>${u.score} pts</td>
+                <td>${u.is_admin ? '<span class="admin-badge">Admin</span>' : 'Usuario'}</td>
+                <td>
+                  <div class="admin-actions">
+                    ${u.id !== currentUser.id ? `
+                      ${u.is_admin
+                        ? `<button onclick="adminDemote(${u.id})">Quitar admin</button>`
+                        : `<button class="btn-primary" onclick="adminPromote(${u.id})">Hacer admin</button>`
+                      }
+                      <button onclick="adminDelete(${u.id}, '${u.username}')">Eliminar</button>
+                    ` : '<span style="color:var(--text3);font-size:11px">Tu cuenta</span>'}
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    } catch {
+      list.innerHTML = '<div class="empty"><div class="icon">📡</div>No se pudo cargar la lista de usuarios.</div>';
+    }
+  }
+
+  async function adminPromote(userId) {
+    try {
+      const res = await fetch(`${API}/admin/users/${userId}/promote`, {
+        method: 'PATCH',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) throw new Error();
+      await refreshAdminUsers();
+    } catch { alert('No se pudo promover al usuario.'); }
+  }
+
+  async function adminDemote(userId) {
+    try {
+      const res = await fetch(`${API}/admin/users/${userId}/demote`, {
+        method: 'PATCH',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) throw new Error();
+      await refreshAdminUsers();
+    } catch { alert('No se pudo quitar los permisos.'); }
+  }
+
+  async function adminDelete(userId, username) {
+    if (!confirm(`¿Seguro que querés eliminar a "${username}"? Esta acción no se puede deshacer.`)) return;
+    try {
+      const res = await fetch(`${API}/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok && res.status !== 204) throw new Error();
+      await refreshAdminUsers();
+    } catch { alert('No se pudo eliminar al usuario.'); }
   }
 
   load();
